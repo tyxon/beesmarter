@@ -5,43 +5,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import hu.r00ts.beesmarter.R;
 
-public class ManualTestActivity extends Activity {
+public class CheckPasswordActivity extends Activity {
 
-    public Button setPasswordButton;
+    public EditText password;
     public Button checkPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_test);
-        setPasswordButton = (Button) findViewById(R.id.setPasswordButton);
+        setContentView(R.layout.activity_check_password);
+
+        password = (EditText) findViewById(R.id.password);
         checkPasswordButton = (Button) findViewById(R.id.checkPasswordButton);
 
-        setPasswordButton.setOnClickListener(setPasswordButtonOnClickListener);
         checkPasswordButton.setOnClickListener(checkPasswordButtonOnClickListener);
     }
-
-    View.OnClickListener setPasswordButtonOnClickListener = new View.OnClickListener(){
-
-        @Override
-        public void onClick(View arg0) {
-            Intent intent = new Intent(ManualTestActivity.this, SetPasswordActivity.class);
-            startActivity(intent);
-        }
-
-    };
 
     View.OnClickListener checkPasswordButtonOnClickListener = new View.OnClickListener(){
 
         @Override
         public void onClick(View arg0) {
-            Intent intent = new Intent(ManualTestActivity.this, CheckPasswordActivity.class);
+            Intent intent = new Intent(CheckPasswordActivity.this, ManualTestActivity.class);
             startActivity(intent);
         }
 
     };
+
 }
