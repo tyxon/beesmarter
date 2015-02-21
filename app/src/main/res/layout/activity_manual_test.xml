@@ -7,11 +7,13 @@
     android:weightSum="1">
 
     <Button
+        android:id="@+id/setPasswordButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setPassword" />
+        android:text="@string/setNewPassword" />
 
     <Button
+        android:id="@+id/checkPasswordButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/checkPassword" />
