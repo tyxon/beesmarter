@@ -15,11 +15,11 @@
         android:hint="@string/serverAddress"
         android:text="@string/serverAddress"
         android:padding="5dp" />
-    <Button
+    <Button android:id="@+id/automaticTestButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/autoTest" />
-    <Button
+    <Button android:id="@+id/manualTestButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/manualTest" />
