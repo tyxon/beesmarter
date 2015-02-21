@@ -1,7 +1,8 @@
-package hu.r00ts.beesmarter.hu.r00ts.beesmarter.communication;
+package hu.r00ts.beesmarter.communication;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,14 +32,14 @@ public class Client extends AsyncTask<Void, Void, Void> {
 
         try{
             socket = new Socket(serverIP, serverPort);
-            ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream(1024);
+            /*ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream(1024);
             byte[] buffer = new byte[1024];
             int bytesRead;
             InputStream inputStream = socket.getInputStream();
             while ((bytesRead = inputStream.read(buffer)) != -1){
                 byteArrayOutputStream.write(buffer, 0, bytesRead);
                 response += byteArrayOutputStream.toString("UTF-8");
-            }
+            }*/
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
         } catch (IOException ex){
@@ -60,7 +61,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        
+        Toast.makeText(activity, "Success", Toast.LENGTH_SHORT);
         super.onPostExecute(result);
     }
 
