@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import hu.r00ts.beesmarter.R;
+import hu.r00ts.beesmarter.businesslogic.AutomaticTestTask;
 
 public class MainActivity extends Activity {
 
@@ -19,6 +20,9 @@ public class MainActivity extends Activity {
     public Button automaticTestButton;
     public Button manualTestButton;
     public Spinner testCaseList;
+
+    private String defaultIP = "192.168.2.8";
+    //private String defaultIP = "192.168.0.100";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,9 @@ public class MainActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         testCaseList.setAdapter(adapter);
 
+        serverAddress.setText(defaultIP);
+        serverAddress.setHint(defaultIP);
+
         automaticTestButton.setOnClickListener(automaticTestButtonOnClickListener);
         manualTestButton.setOnClickListener(manualTestButtonOnClickListener);
     }
@@ -43,7 +50,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(MainActivity.this, serverAddress.getText(), Toast.LENGTH_SHORT).show();
+                AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString());
+                automaticTestTask.execute();
             }
 
     };
