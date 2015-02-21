@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.View.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-=======
->>>>>>> origin/master
 
 import hu.r00ts.beesmarter.R;
 
@@ -33,7 +30,6 @@ public class MainActivity extends Activity {
         manualTestButton.setOnClickListener(manualTestButtonOnClickListener);
     }
 
-<<<<<<< HEAD
     OnClickListener automaticTestButtonOnClickListener = new OnClickListener(){
 
             @Override
@@ -47,14 +43,10 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View arg0) {
-
+            Intent intent = new Intent(MainActivity.this, ManualTestActivity.class);
+            startActivity(intent);
         }
 
     };
-=======
-    public void manualTest(View view) {
-        Intent intent = new Intent(this, ManualTestActivity.class);
-        startActivity(intent);
-    }
->>>>>>> origin/master
+
 }
