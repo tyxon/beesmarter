@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import hu.r00ts.beesmarter.R;
 import hu.r00ts.beesmarter.businesslogic.AutomaticTestTask;
+import hu.r00ts.beesmarter.businesslogic.MockAutomaticTestTask;
 
 public class MainActivity extends Activity {
 
@@ -49,8 +50,10 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
-                automaticTestTask.execute();
+                /*AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
+                automaticTestTask.execute();*/
+                MockAutomaticTestTask mockAutomaticTestTask = new MockAutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
+                mockAutomaticTestTask.execute();
             }
 
     };
