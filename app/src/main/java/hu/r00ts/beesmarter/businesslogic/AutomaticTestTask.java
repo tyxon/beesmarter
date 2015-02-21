@@ -28,7 +28,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
 
     private boolean isSuccessfullyConnected = false;
 
-    public AutomaticTestTask(Activity activity, String serverIP, String clientId){
+    public AutomaticTestTask(Activity activity, String serverIP, String clientId) {
         this.activity = activity;
         this.serverIP = serverIP;
         this.clientId = clientId;
@@ -38,7 +38,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         client = new Client(serverIP);
 
-        if(client.isConnected() || client.connect()) {
+        if (client.isConnected() || client.connect()) {
             isSuccessfullyConnected = true;
 
             answer = client.receiveMessage();
@@ -62,24 +62,23 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             client.sendMessage(REQUEST_TRAIN);
             answer = client.receiveMessage();
             Log.d("answer", answer != null ? answer : "answer is null");
-            //Todo: answer from xml
-            Training training = new Training();
+            Training training = XmlParser.parseTraining(answer);
             PasswordBehaviorChecker passwordBehaviorChecker = new PasswordBehaviorChecker(password, training);
 
             //tests
             boolean isTestData = true;
             client.sendMessage(REQUEST_TEST);
-            while(isTestData) {
+            while (isTestData) {
                 answer = client.receiveMessage();
                 Log.d("answer", answer != null ? answer : "answer is null");
 
-                if(answer != null && answer.contains("GOODBYE")){
+                if (answer != null && answer.contains("GOODBYE")) {
                     isTestData = false;
-                }else{
-                    //Todo: answer from xml
-                    Pattern testPattern = new Pattern();
+                } else {
+                    Pattern testPattern = XmlParser.parsePattern(answer);
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
+                    Log.d("answer", isOk ? ACCEPT : REJECT);
                 }
             }
 
@@ -91,7 +90,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(!isSuccessfullyConnected){
+        if (!isSuccessfullyConnected) {
             Toast.makeText(activity, "Connection fail", Toast.LENGTH_SHORT).show();
         }
 

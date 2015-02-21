@@ -29,7 +29,7 @@ public class PasswordBehaviorChecker {
     private boolean isPasswordMatch(Pattern pattern){
         String patternPassword = "";
         for(Key key : pattern.Keys){
-            patternPassword = patternPassword.concat(String.valueOf(key.KeyDown.Code));
+            patternPassword = patternPassword.concat(key.KeyDown.Code);
         }
 
         return password.compareTo(patternPassword) == 0;

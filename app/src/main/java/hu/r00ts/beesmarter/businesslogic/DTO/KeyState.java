@@ -4,7 +4,7 @@ public class KeyState {
 
     public int Time;
 
-    public Character Code;
+    public String Code;
 
     public int X;
 
