@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import hu.r00ts.beesmarter.businesslogic.DTO.Pattern;
+import hu.r00ts.beesmarter.businesslogic.DTO.Training;
 import hu.r00ts.beesmarter.communication.Client;
 
 public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
@@ -22,12 +24,14 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     private String serverIP;
     private Client client;
     private String answer;
+    private String clientId;
 
     private boolean isSuccessfullyConnected = false;
 
-    public AutomaticTestTask(Activity activity, String serverIP){
+    public AutomaticTestTask(Activity activity, String serverIP, String clientId){
         this.activity = activity;
         this.serverIP = serverIP;
+        this.clientId = clientId;
     }
 
     @Override
@@ -35,42 +39,47 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
         client = new Client(serverIP);
 
         if(client.isConnected() || client.connect()) {
-            //Todo: logic
             isSuccessfullyConnected = true;
 
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "");
+            Log.d("answer", answer != null ? answer : "answer is null");
 
             client.sendMessage(START);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "");
+            Log.d("answer", answer != null ? answer : "answer is null");
 
-            client.sendMessage(CLIENT_ID);
+            client.sendMessage(clientId);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "");
+            Log.d("answer", answer != null ? answer : "answer is null");
 
             //current password
             client.sendMessage(REQUEST_DATA);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "");
+            Log.d("answer", answer != null ? answer : "answer is null");
+            String password = answer;
 
             //current behaviour
             client.sendMessage(REQUEST_TRAIN);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "");
+            Log.d("answer", answer != null ? answer : "answer is null");
+            //Todo: answer from xml
+            Training training = new Training();
+            PasswordBehaviorChecker passwordBehaviorChecker = new PasswordBehaviorChecker(password, training);
 
             //tests
             boolean isTestData = true;
             client.sendMessage(REQUEST_TEST);
             while(isTestData) {
                 answer = client.receiveMessage();
-                Log.d("answer", answer != null ? answer : "");
+                Log.d("answer", answer != null ? answer : "answer is null");
 
                 if(answer != null && answer.contains("GOODBYE")){
                     isTestData = false;
                 }else{
-                    //Todo: test process logic
-                    client.sendMessage(ACCEPT);
+                    //Todo: answer from xml
+                    Pattern testPattern = new Pattern();
+                    boolean isOk = passwordBehaviorChecker.isOk(testPattern);
+                    client.sendMessage(isOk ? ACCEPT : REJECT);
                 }
             }
 
@@ -82,7 +91,9 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        Toast.makeText(activity, isSuccessfullyConnected ? "Connection success" : "Connection fail", Toast.LENGTH_SHORT).show();
+        if(!isSuccessfullyConnected){
+            Toast.makeText(activity, "Connection fail", Toast.LENGTH_SHORT).show();
+        }
 
         super.onPostExecute(result);
     }

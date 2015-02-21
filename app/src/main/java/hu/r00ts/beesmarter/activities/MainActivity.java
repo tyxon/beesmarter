@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import hu.r00ts.beesmarter.R;
 import hu.r00ts.beesmarter.businesslogic.AutomaticTestTask;
@@ -50,7 +49,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString());
+                AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
                 automaticTestTask.execute();
             }
 
