@@ -28,11 +28,33 @@ public class PasswordBehaviorChecker {
 
     private boolean isPasswordMatch(Pattern pattern){
         String patternPassword = "";
-        for(Key key : pattern.Keys){
-            patternPassword = patternPassword.concat(key.KeyDown.Code);
+        Boolean isUpperCase = false;
+        KeyFor: for(Key key : pattern.Keys) {
+            switch (key.KeyDown.Code) {
+                case "SHIFT":
+                    isUpperCase = true;
+                    break;
+                case "ENTER":
+                    break KeyFor;
+                case "SPACE":
+                    patternPassword = patternPassword.concat(" ");
+                    break;
+                case "BACKSPACE":
+                    String tempPassword = patternPassword;
+                    patternPassword = patternPassword.substring(0, tempPassword.length() - 1);
+                    break;
+                default:
+                    if (isUpperCase) {
+                        patternPassword = patternPassword.concat(key.KeyDown.Code.toUpperCase());
+                        isUpperCase = false;
+                    } else {
+                        patternPassword = patternPassword.concat(key.KeyDown.Code);
+                    }
+                    break;
+            }
         }
 
-        return password.compareTo(patternPassword) == 0;
+        return password.equals(patternPassword);
     }
 
 }

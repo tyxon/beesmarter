@@ -56,7 +56,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             client.sendMessage(REQUEST_DATA);
             answer = client.receiveMessage();
             Log.d("answer", answer != null ? answer : "answer is null");
-            String password = answer;
+            String password = answer.substring(9);
 
             //current behaviour
             client.sendMessage(REQUEST_TRAIN);
