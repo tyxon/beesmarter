@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hu.r00ts.beesmarter" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +18,8 @@
         </activity>
         <activity
             android:name=".activities.ManualTestActivity"
-            android:label="@string/title_activity_manual_test" >
+            android:parentActivityName=".activities.MainActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

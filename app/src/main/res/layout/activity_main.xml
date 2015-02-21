@@ -22,5 +22,6 @@
     <Button android:id="@+id/manualTestButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/manualTest" />
+        android:text="@string/manualTest"
+        android:onClick="manualTest" />
 </LinearLayout>
