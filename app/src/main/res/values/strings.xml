@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Beesmarter</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="serverAddress">192.168.0.100</string>
+    <string name="autoTest">Automatic Test</string>
     <string name="action_settings">Settings</string>
 </resources>
