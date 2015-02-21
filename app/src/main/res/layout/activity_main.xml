@@ -4,11 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    android:padding="5dp"
-    android:paddingLeft="5dp"
-    android:paddingTop="5dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="5dp">
+    android:padding="5dp">
     <EditText android:id="@+id/serverAddress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
