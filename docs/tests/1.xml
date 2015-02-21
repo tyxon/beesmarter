@@ -1,0 +1,16 @@
+<pattern>
+    <key-down code="a" posix-time="0" relative-pos-x="25%" relative-pos-y="61%" />
+    <key-up code="a" posix-time="63" relative-pos-x="25%" relative-pos-y="61%" />
+    <key-down code="d" posix-time="380" relative-pos-x="40%" relative-pos-y="52%" />
+    <key-up code="d" posix-time="471" relative-pos-x="37%" relative-pos-y="49%" />
+    <key-down code="e" posix-time="537" relative-pos-x="12%" relative-pos-y="88%" />
+    <key-up code="e" posix-time="626" relative-pos-x="12%" relative-pos-y="88%" />
+    <key-down code="s" posix-time="800" relative-pos-x="16%" relative-pos-y="56%" />
+    <key-up code="s" posix-time="849" relative-pos-x="16%" relative-pos-y="56%" />
+    <key-down code="x" posix-time="1131" relative-pos-x="40%" relative-pos-y="76%" />
+    <key-up code="x" posix-time="1203" relative-pos-x="38%" relative-pos-y="74%" />
+    <key-down code="q" posix-time="1468" relative-pos-x="62%" relative-pos-y="54%" />
+    <key-up code="q" posix-time="1510" relative-pos-x="62%" relative-pos-y="54%" />
+    <key-down code="ENTER" posix-time="2295" relative-pos-x="84%" relative-pos-y="58%" />
+    <key-up code="ENTER" posix-time="2367" relative-pos-x="84%" relative-pos-y="58%" />
+</pattern>
