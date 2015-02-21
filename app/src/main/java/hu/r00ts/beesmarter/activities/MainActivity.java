@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(MainActivity.this, serverAddress.getText(), Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this, serverAddress.getText(), Toast.LENGTH_SHORT).show();
             }
 
     };
