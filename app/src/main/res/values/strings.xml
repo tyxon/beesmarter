@@ -3,5 +3,9 @@
 
     <string name="serverAddress">192.168.0.100</string>
     <string name="autoTest">Automatic Test</string>
+    <string name="manualTest">Manual Test</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_manual_test">ManualTestActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
