@@ -1,0 +1,1 @@
+"c:\Program Files\Java\jre7\bin\java" -jar ECServer_JRE7.jar > info.log 2> error.log
