@@ -3,6 +3,7 @@ package hu.r00ts.beesmarter.businesslogic;
 import android.util.Log;
 
 import hu.r00ts.beesmarter.businesslogic.DTO.*;
+import hu.r00ts.beesmarter.businesslogic.biometric.EnterTest;
 import hu.r00ts.beesmarter.businesslogic.biometric.HandTest;
 import hu.r00ts.beesmarter.businesslogic.biometric.WritingSpeedTest;
 
@@ -40,12 +41,22 @@ public class PasswordBehaviorChecker {
         Boolean handTestResult = handTest.run();
         if (!handTestResult) {
             Log.d(PasswordBehaviorChecker.class.getName(), "False");
-            return false;
+            //return false;
         } else {
             Log.d(PasswordBehaviorChecker.class.getName(), "True");
         }
 
-        return writingSpeedTestResult && handTestResult;
+        Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'EnterTest'");
+        EnterTest enterTest = new EnterTest(training, pattern);
+        Boolean enterTestResult = enterTest.run();
+        if (!enterTestResult) {
+            Log.d(PasswordBehaviorChecker.class.getName(), "False");
+            //return false;
+        } else {
+            Log.d(PasswordBehaviorChecker.class.getName(), "True");
+        }
+
+        return writingSpeedTestResult && handTestResult && enterTestResult;
     }
 
     private boolean isPasswordMatch(Pattern pattern){
