@@ -19,7 +19,6 @@ public class KeyReleasedConstraint extends BaseConstraint {
     @Override
     public double getPossibility() {
         int maxKeyCount = training.getMaxKeyCount();
-        Log.d(KeyPressedConstraint.class.getName(), "maxKeyCount: " + maxKeyCount);
         List<Long> currentTimes = null;
         List<Double> possibilities = new ArrayList<>();
 
