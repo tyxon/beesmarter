@@ -43,10 +43,11 @@ public class SetPasswordActivity extends Activity {
 
     long startTime;
     boolean isStarted;
-    String currentPassword;
+    public static String currentPassword;
 
     boolean isStartedCounter;
 
+    CountDownTimer cdt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +150,7 @@ public class SetPasswordActivity extends Activity {
     }
 
     void startCounter(){
-        new CountDownTimer(30000, 1000) {
+        cdt = new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 timer.setText("" + millisUntilFinished / 1000);
@@ -165,7 +166,8 @@ public class SetPasswordActivity extends Activity {
                         }).show();
             }
 
-        }.start();
+        };
+        cdt.start();
     }
 
     OnClickListener setPasswordButtonOnClickListener = new OnClickListener(){
@@ -223,6 +225,9 @@ public class SetPasswordActivity extends Activity {
     };
 
     void endPattern(){
+        if(cdt != null){
+            cdt.cancel();
+        }
         finish();
     }
 
@@ -238,8 +243,9 @@ public class SetPasswordActivity extends Activity {
                     if(!isStarted && Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         isStarted = true;
                         createNewPattern();
-                        Log.d("STATE", "started");
-                    }else if(pattern != null){
+                    }
+
+                    if(pattern != null){
                         Key key = new Key();
                         pattern.Keys.add(key);
                         KeyState keyStateDown = new KeyState();
@@ -371,9 +377,7 @@ public class SetPasswordActivity extends Activity {
         startTime = System.currentTimeMillis();
 
         if(pattern != null && pattern.Keys.size() > 0){
-            Log.d("STATE", "end");
             training.Patterns.add(pattern);
-            setPasswordButton.setText(String.valueOf(training.Patterns.size()));
         }
 
         pattern = new Pattern();
