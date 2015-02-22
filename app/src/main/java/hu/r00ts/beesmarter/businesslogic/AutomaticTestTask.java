@@ -79,6 +79,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
                     Log.d("answer", isOk ? ACCEPT : REJECT);
+                    Log.d("tyxon", isOk ? ACCEPT : REJECT);
                 }
             }
 

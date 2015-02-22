@@ -50,10 +50,10 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                /*AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
-                automaticTestTask.execute();*/
-                MockAutomaticTestTask mockAutomaticTestTask = new MockAutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
-                mockAutomaticTestTask.execute();
+                AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
+                automaticTestTask.execute();
+                /*MockAutomaticTestTask mockAutomaticTestTask = new MockAutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
+                mockAutomaticTestTask.execute();*/
             }
 
     };
