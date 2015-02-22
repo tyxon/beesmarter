@@ -25,6 +25,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     private Client client;
     private String answer;
     private String clientId;
+    private String goodbyText = "GOODBYE - CORRECTANSWERS=[";
 
     private boolean isSuccessfullyConnected = false;
 
@@ -78,10 +79,14 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
                     Pattern testPattern = XmlParser.parsePattern(answer);
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
+                    goodbyText += (isOk ? ACCEPT : REJECT) + " ";
                     Log.d("answer", isOk ? ACCEPT : REJECT);
                     Log.d("tyxon", isOk ? ACCEPT : REJECT);
                 }
             }
+
+            Log.d("answer", goodbyText + "]");
+            Log.d("answer", answer.equals(goodbyText)? "GOOD" : "BAD");
 
             client.close();
         }

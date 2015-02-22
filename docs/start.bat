@@ -1,3 +1,4 @@
+@echo off
 set launchLine=java -jar ECServer_JRE7.jar 2> log
 
 :launch

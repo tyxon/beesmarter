@@ -62,7 +62,7 @@ public class PasswordBehaviorChecker {
             }
         }
 
-        Log.d("answer", "password:" + patternPassword);
+        Log.d("answer", "patternPassword:" + patternPassword);
 
         return password.equals(patternPassword);
     }
