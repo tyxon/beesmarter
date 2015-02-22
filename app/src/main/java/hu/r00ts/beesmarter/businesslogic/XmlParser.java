@@ -101,7 +101,7 @@ public class XmlParser {
     private static KeyState readKey(XmlPullParser parser) {
         KeyState keyState = new KeyState();
         keyState.Code = parser.getAttributeValue(ns, "code");
-        keyState.Time = Integer.parseInt(parser.getAttributeValue(ns, "posix-time"));
+        keyState.Time = Long.parseLong(parser.getAttributeValue(ns, "posix-time"));
         String x = parser.getAttributeValue(ns, "relative-pos-x");
         keyState.X = Integer.parseInt(x.substring(0, x.length()-1));
         String y = parser.getAttributeValue(ns, "relative-pos-y");
