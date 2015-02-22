@@ -1,6 +1,7 @@
 package hu.r00ts.beesmarter.businesslogic.biometric;
 
 
+import android.inputmethodservice.Keyboard;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,7 +29,9 @@ public class KeyPressedConstraint extends BaseConstraint {
                 int keySize = p.Keys.size();
                 if(i < keySize){
                     Key key = p.Keys.get(i);
-                    currentTimes.add(key.getKeyPressTime());
+                    if(key.KeyDown.Code != "ENTER") {
+                        currentTimes.add(key.getKeyPressTime());
+                    }
                 }
             }
 

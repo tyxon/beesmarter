@@ -98,12 +98,15 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             int goodCount = 0;
             for(int i = 0; i < correctAnswers.size();i++){
                 String ca = correctAnswers.get(i);
-                if(answers.get(i).equals(ca) ){
+                String a = answers.get(i);
+                if(a.equals(ca)){
                     goodCount++;
                 }else{
                     Log.d("answer", "bad nr: " + (i+1));
                     Log.d("answer", tests.get(i));
                     Log.d("answer", "correct answer: " + ca);
+                    Log.d("answer", "wrong answer: " + a);
+
                 }
             }
 

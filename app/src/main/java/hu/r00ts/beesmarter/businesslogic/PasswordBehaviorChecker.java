@@ -2,6 +2,7 @@ package hu.r00ts.beesmarter.businesslogic;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class PasswordBehaviorChecker {
         Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'isPasswordMatch'");
         if(!isPasswordMatch(pattern)){
             Log.d(PasswordBehaviorChecker.class.getName(), "False");
+            Log.d(OverallTimeConstraint.class.getName(),"0");
+            Log.d(KeyPressedConstraint.class.getName(),"0");
+            Log.d(KeyReleasedConstraint.class.getName(),"0");
             return false;
         }else{
             Log.d(PasswordBehaviorChecker.class.getName(), "True");
@@ -38,21 +42,16 @@ public class PasswordBehaviorChecker {
         double sumWeights = 0;
 
         for(BaseConstraint constraint : constraints){
-            Log.d(PasswordBehaviorChecker.class.getName(), "Checking " + constraint.getClass().getName());
-
             double possibility = constraint.getPossibility();
             possibilities += possibility;
             double weight = constraint.getWeight();
             sumWeights += weight;
-            Log.d(constraint.getClass().getName(),"Possibility: " + possibility);
-            Log.d(constraint.getClass().getName(),"Weight: " + weight);
-
-            Log.d(constraint.getClass().getName(),"Current result: " + possibilities / sumWeights);
+            DecimalFormat newFormat = new DecimalFormat("#.##");
+            Log.d(constraint.getClass().getName(),newFormat.format(possibility) + " -> " + weight + " -> " + newFormat.format(possibilities / sumWeights));
         }
 
         double result = possibilities / sumWeights;
-        Log.d(PasswordBehaviorChecker.class.getName() + " FR","Final result: " + result);
-        return result > 0.70d;
+        return result > 0.65d;
     }
 
     private boolean isPasswordMatch(Pattern pattern){
