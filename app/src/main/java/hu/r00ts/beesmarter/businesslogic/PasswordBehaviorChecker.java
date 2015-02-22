@@ -31,7 +31,7 @@ public class PasswordBehaviorChecker {
 
         constraints  = new ArrayList<>();
         constraints.add(new OverallTimeConstraint(training, pattern));
-        constraints.add(new KeyPressedConstraint(training, pattern));
+        //constraints.add(new KeyPressedConstraint(training, pattern));
         //constraints.add(new KeyReleasedConstraint(training, pattern));
 
         double possibilities = 0;
@@ -52,7 +52,7 @@ public class PasswordBehaviorChecker {
 
         double result = possibilities / sumWeights;
         Log.d(PasswordBehaviorChecker.class.getName() + " FR","Final result: " + result);
-        return result > 0.7d;
+        return result > 0.70d;
     }
 
     private boolean isPasswordMatch(Pattern pattern){
@@ -84,8 +84,6 @@ public class PasswordBehaviorChecker {
                     break;
             }
         }
-
-        Log.d("answer", "patternPassword:" + patternPassword);
 
         return password.equals(patternPassword);
     }

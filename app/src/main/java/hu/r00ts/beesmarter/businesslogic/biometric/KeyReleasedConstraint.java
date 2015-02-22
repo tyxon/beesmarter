@@ -1,12 +1,8 @@
 package hu.r00ts.beesmarter.businesslogic.biometric;
 
-
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.r00ts.beesmarter.businesslogic.DTO.Key;
 import hu.r00ts.beesmarter.businesslogic.DTO.Pattern;
 import hu.r00ts.beesmarter.businesslogic.DTO.Training;
 
@@ -18,17 +14,16 @@ public class KeyReleasedConstraint extends BaseConstraint {
 
     @Override
     public double getPossibility() {
-        int maxKeyCount = training.getMaxKeyCount();
-        List<Long> currentTimes = null;
+        int maxKeyCount = training.getMaxKeyCount() - 1;
+        List<Long> currentTimes;
         List<Double> possibilities = new ArrayList<>();
 
         for(int i = 0; i < maxKeyCount; i++) {
             currentTimes = new ArrayList<>();
             for (Pattern p : training.Patterns) {
-                int keySize = p.Keys.size();
-                if(i < keySize){
-                    Key key = p.Keys.get(i);
-                    currentTimes.add(key.getKeyPressTime());
+                int keySize = p.Keys.size() - 1;
+                if(i < keySize) {
+                    currentTimes.add(p.getNextTime(i));
                 }
             }
 
@@ -66,10 +61,9 @@ public class KeyReleasedConstraint extends BaseConstraint {
                     max = average + s;
                 }
 
-                if(i < pattern.Keys.size()){
-                    Key patternKey = pattern.Keys.get(i);
-                    long patternKeyKeyPressTime = patternKey.getKeyPressTime();
-                    if(patternKeyKeyPressTime >= min && patternKeyKeyPressTime <= max){
+                if(i < pattern.Keys.size() - 1){
+                    long patternKeyKeyReleaseTime = pattern.getNextTime(i);
+                    if(patternKeyKeyReleaseTime >= min && patternKeyKeyReleaseTime <= max){
                         currentPossibility = 1;
                     }
                 }

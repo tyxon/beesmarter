@@ -24,7 +24,7 @@ public class Pattern {
     }
 
     public Long getNextTime(Integer index) {
-        if (index < 0 || index >= Keys.size()) {
+        if (index < 0 || index >= Keys.size() - 1) {
             return Long.valueOf(0);
         }
 

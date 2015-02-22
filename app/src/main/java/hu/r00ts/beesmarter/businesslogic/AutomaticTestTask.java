@@ -29,6 +29,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     private String answer;
     private String clientId;
     private List<String> answers = new ArrayList<>();
+    private List<String> tests = new ArrayList<>();
 
     private boolean isSuccessfullyConnected = false;
 
@@ -46,26 +47,26 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             isSuccessfullyConnected = true;
 
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "answer is null");
+            //Log.d("answer", answer != null ? answer : "answer is null");
 
             client.sendMessage(START);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "answer is null");
+            //Log.d("answer", answer != null ? answer : "answer is null");
 
             client.sendMessage(clientId);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "answer is null");
+            //Log.d("answer", answer != null ? answer : "answer is null");
 
             //current password
             client.sendMessage(REQUEST_DATA);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "answer is null");
+            //Log.d("answer", answer != null ? answer : "answer is null");
             String password = answer.substring(9);
 
             //current behaviour
             client.sendMessage(REQUEST_TRAIN);
             answer = client.receiveMessage();
-            Log.d("answer", answer != null ? answer : "answer is null");
+            //Log.d("answer", answer != null ? answer : "answer is null");
             Training training = XmlParser.parseTraining(answer);
             PasswordBehaviorChecker passwordBehaviorChecker = new PasswordBehaviorChecker(password, training);
 
@@ -75,21 +76,22 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             List<String> correctAnswers = new ArrayList<>();
             while (isTestData) {
                 answer = client.receiveMessage();
-                Log.d("answer", answer != null ? answer : "answer is null");
+                //Log.d("answer", answer != null ? answer : "answer is null");
 
                 if (answer != null && answer.contains("GOODBYE")) {
+                    Log.d("answer", answer != null ? answer : "answer is null");
                     isTestData = false;
                     answer = answer.substring(26, answer.length() - 2);
                     for(String a : answer.split(" ")){
                         correctAnswers.add(a);
                     }
                 } else {
+                    tests.add(answer);
                     Pattern testPattern = XmlParser.parsePattern(answer);
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
                     answers.add(isOk ? ACCEPT : REJECT);
-                    Log.d("answer", isOk ? ACCEPT : REJECT);
-                    Log.d("tyxon", isOk ? ACCEPT : REJECT);
+                    //Log.d("answer", isOk ? ACCEPT : REJECT);
                 }
             }
 
@@ -100,6 +102,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
                     goodCount++;
                 }else{
                     Log.d("answer", "bad nr: " + (i+1));
+                    Log.d("answer", tests.get(i));
                     Log.d("answer", "correct answer: " + ca);
                 }
             }
