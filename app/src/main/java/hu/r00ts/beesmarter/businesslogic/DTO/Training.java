@@ -4,9 +4,12 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 public class Training {
 
@@ -43,6 +46,21 @@ public class Training {
         }
 
         return lowest;
+    }
+
+    public HashMap<String, Double> getAvarageKeypresses() {
+        HashMap<String, Double> avarageKeypresses = new HashMap<String, Double>();
+        for (Pattern pattern : Patterns) {
+            for (Key key : pattern.Keys) {
+                avarageKeypresses.put(key.KeyDown.Code, avarageKeypresses.get(key.KeyDown.Code) + key.getKeyPressTime().doubleValue());
+            }
+        }
+
+        for (String key : avarageKeypresses.keySet()) {
+            avarageKeypresses.put(key, avarageKeypresses.get(key) / Patterns.size());
+        }
+
+        return avarageKeypresses;
     }
 
 
