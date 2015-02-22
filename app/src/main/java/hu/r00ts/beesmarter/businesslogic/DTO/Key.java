@@ -13,7 +13,7 @@ public class Key {
         return motion;
     }
 
-    public Integer getKeyPressTime() {
+    public Long getKeyPressTime() {
         return KeyUp.Time - KeyDown.Time;
     }
 
