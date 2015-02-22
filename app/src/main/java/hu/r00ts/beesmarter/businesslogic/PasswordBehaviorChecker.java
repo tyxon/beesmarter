@@ -3,6 +3,7 @@ package hu.r00ts.beesmarter.businesslogic;
 import android.util.Log;
 
 import hu.r00ts.beesmarter.businesslogic.DTO.*;
+import hu.r00ts.beesmarter.businesslogic.biometric.WritingSpeedTest;
 
 public class PasswordBehaviorChecker {
 
@@ -23,6 +24,11 @@ public class PasswordBehaviorChecker {
             Log.d(PasswordBehaviorChecker.class.getName(), "True");
         }
 
+        WritingSpeedTest writingSpeedTest = new WritingSpeedTest(training, pattern);
+        if (!writingSpeedTest.run()) {
+           return false;
+        }
+
         return true;
     }
 
@@ -41,7 +47,9 @@ public class PasswordBehaviorChecker {
                     break;
                 case "BACKSPACE":
                     String tempPassword = patternPassword;
-                    patternPassword = patternPassword.substring(0, tempPassword.length() - 1);
+                    if (tempPassword.length() > 0) {
+                        patternPassword = patternPassword.substring(0, tempPassword.length() - 1);
+                    }
                     break;
                 default:
                     if (isUpperCase) {
@@ -53,6 +61,8 @@ public class PasswordBehaviorChecker {
                     break;
             }
         }
+
+        Log.d("answer", "password:" + patternPassword);
 
         return password.equals(patternPassword);
     }
