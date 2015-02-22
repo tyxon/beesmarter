@@ -137,4 +137,15 @@ public class Training {
         return 0;
     }
 
+    public int getMaxKeyCount(){
+        int maxKeyCount = 0;
+        for(Pattern p : Patterns){
+            int size = p.Keys.size();
+            if(size > maxKeyCount){
+                maxKeyCount = size;
+            }
+        }
+
+        return maxKeyCount;
+    }
 }

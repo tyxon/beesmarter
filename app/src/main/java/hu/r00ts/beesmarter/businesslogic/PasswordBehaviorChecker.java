@@ -51,11 +51,8 @@ public class PasswordBehaviorChecker {
         }
 
         double result = possibilities / sumWeights;
-        if(result < 0.7){
-            return false;
-        }else{
-            return true;
-        }
+        Log.d(PasswordBehaviorChecker.class.getName() + " FR","Final result: " + result);
+        return result > 0.7d;
     }
 
     private boolean isPasswordMatch(Pattern pattern){
