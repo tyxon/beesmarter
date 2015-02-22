@@ -2,14 +2,18 @@ package hu.r00ts.beesmarter.businesslogic;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hu.r00ts.beesmarter.businesslogic.DTO.*;
-import hu.r00ts.beesmarter.businesslogic.biometric.HandTest;
-import hu.r00ts.beesmarter.businesslogic.biometric.WritingSpeedTest;
+import hu.r00ts.beesmarter.businesslogic.biometric.*;
 
 public class PasswordBehaviorChecker {
 
     private String password;
     private Training training;
+
+    private List<BaseConstraint> constraints;
 
     public PasswordBehaviorChecker(String password, Training training){
         this.password = password;
@@ -25,27 +29,33 @@ public class PasswordBehaviorChecker {
             Log.d(PasswordBehaviorChecker.class.getName(), "True");
         }
 
-        Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'WritingSpeedTest'");
-        WritingSpeedTest writingSpeedTest = new WritingSpeedTest(training, pattern);
-        Boolean writingSpeedTestResult = writingSpeedTest.run();
-        if (!writingSpeedTestResult) {
-            Log.d(PasswordBehaviorChecker.class.getName(), "False");
-            //return false;
-        } else {
-            Log.d(PasswordBehaviorChecker.class.getName(), "True");
+        constraints  = new ArrayList<>();
+        constraints.add(new OverallTimeConstraint(training, pattern));
+        constraints.add(new KeyPressedConstraint(training, pattern));
+        constraints.add(new KeyPressedConstraint(training, pattern));
+
+        double possibilities = 0;
+        double sumWeights = 0;
+
+        for(BaseConstraint constraint : constraints){
+            Log.d(PasswordBehaviorChecker.class.getName(), "Checking " + constraint.getClass().getName());
+
+            double possibility = constraint.getPossibility();
+            possibilities += possibility;
+            double weight = constraint.getWeight();
+            sumWeights += weight;
+            Log.d(constraint.getClass().getName(),"Possibility: " + possibility);
+            Log.d(constraint.getClass().getName(),"Weight: " + weight);
+
+            Log.d(constraint.getClass().getName(),"Current result: " + possibilities / sumWeights);
         }
 
-        Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'HandTest'");
-        HandTest handTest = new HandTest(training, pattern);
-        Boolean handTestResult = handTest.run();
-        if (!handTestResult) {
-            Log.d(PasswordBehaviorChecker.class.getName(), "False");
+        double result = possibilities / sumWeights;
+        if(result < 0.7){
             return false;
-        } else {
-            Log.d(PasswordBehaviorChecker.class.getName(), "True");
+        }else{
+            return true;
         }
-
-        return writingSpeedTestResult && handTestResult;
     }
 
     private boolean isPasswordMatch(Pattern pattern){
