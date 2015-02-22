@@ -42,4 +42,28 @@ public class Pattern {
     public Double getWriteSpeed() {
         return getPasswordLength().doubleValue() / getFullTime().doubleValue();
     }
+
+    public boolean isCloseToPattern(Pattern pattern) {
+        boolean isOk = true;
+        for(Key key : pattern.Keys){
+            double possibility = 1;
+            int index = pattern.Keys.indexOf(key);
+            if(index < Keys.size()){
+                Key currentKey = Keys.get(index);
+                if(Math.abs(currentKey.getKeyPressTime() - key.getKeyPressTime()) > 40){
+                    possibility -= 0.11;
+                }
+
+                if(Math.abs(currentKey.KeyUp.X - key.KeyDown.X) > 50 && Math.abs(currentKey.KeyUp.Y - key.KeyDown.Y) > 50){
+                    possibility -= 0.11;
+                }
+                if(possibility < 0.8){
+                    isOk = false;
+                    break;
+                }
+            }
+        }
+
+        return isOk;
+    }
 }

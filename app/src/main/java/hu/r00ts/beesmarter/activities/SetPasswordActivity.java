@@ -31,7 +31,6 @@ import hu.r00ts.beesmarter.views.KeyButton;
 public class SetPasswordActivity extends Activity {
 
     public EditText password;
-    public EditText passwordCheck;
     public Button setPasswordButton;
     public Button endPatternButton;
     public TextView timer;
@@ -58,7 +57,6 @@ public class SetPasswordActivity extends Activity {
         currentPassword = null;
 
         password = (EditText) findViewById(R.id.password);
-        passwordCheck = (EditText) findViewById(R.id.passwordCheck);
         setPasswordButton = (Button) findViewById(R.id.setPasswordButton);
         endPatternButton = (Button) findViewById(R.id.endPatternButton);
         keyboardLayout = (LinearLayout) findViewById(R.id.keyboardLayout);
@@ -210,7 +208,6 @@ public class SetPasswordActivity extends Activity {
             }
 
             password.setText("");
-            passwordCheck.setText("");
         }
 
     };
@@ -355,8 +352,6 @@ public class SetPasswordActivity extends Activity {
                             }
                             break;
                     }
-
-                    passwordCheck.setText(password.getText());
 
                     return true;
                 }

@@ -12,7 +12,6 @@ import android.widget.Spinner;
 
 import hu.r00ts.beesmarter.R;
 import hu.r00ts.beesmarter.businesslogic.AutomaticTestTask;
-import hu.r00ts.beesmarter.businesslogic.MockAutomaticTestTask;
 
 public class MainActivity extends Activity {
 
@@ -38,6 +37,7 @@ public class MainActivity extends Activity {
         String[] items = new String[]{"TEST1", "TEST2", "TEST3", "TEST4"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         testCaseList.setAdapter(adapter);
+        testCaseList.setVisibility(View.GONE);
 
         serverAddress.setText(defaultIP);
         serverAddress.setHint(defaultIP);
@@ -52,8 +52,6 @@ public class MainActivity extends Activity {
             public void onClick(View arg0) {
                 AutomaticTestTask automaticTestTask = new AutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
                 automaticTestTask.execute();
-                /*MockAutomaticTestTask mockAutomaticTestTask = new MockAutomaticTestTask(MainActivity.this, serverAddress.getText().toString(), testCaseList.getSelectedItem().toString());
-                mockAutomaticTestTask.execute();*/
             }
 
     };

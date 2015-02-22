@@ -15,7 +15,7 @@ import hu.r00ts.beesmarter.communication.Client;
 public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
 
     private static final String START = "BSP 1.0 CLIENT HELLO";
-    private static final String CLIENT_ID = "TEST1";
+    private static final String CLIENT_ID = "r00ts";
     private static final String REQUEST_DATA = "RQSTDATA";
     private static final String REQUEST_TRAIN = "RQSTTRAIN";
     private static final String REQUEST_TEST = "RQSTTEST";
@@ -36,7 +36,8 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     public AutomaticTestTask(Activity activity, String serverIP, String clientId) {
         this.activity = activity;
         this.serverIP = serverIP;
-        this.clientId = clientId;
+        //this.clientId = clientId;
+        this.clientId = CLIENT_ID;
     }
 
     @Override
@@ -79,23 +80,23 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
                 //Log.d("answer", answer != null ? answer : "answer is null");
 
                 if (answer != null && answer.contains("GOODBYE")) {
-                    Log.d("answer", answer != null ? answer : "answer is null");
+                    //Log.d("answer", answer != null ? answer : "answer is null");
                     isTestData = false;
-                    answer = answer.substring(26, answer.length() - 2);
+                    /*answer = answer.substring(26, answer.length() - 2);
                     for(String a : answer.split(" ")){
                         correctAnswers.add(a);
-                    }
+                    }*/
                 } else {
-                    tests.add(answer);
+                    //tests.add(answer);
                     Pattern testPattern = XmlParser.parsePattern(answer);
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
-                    answers.add(isOk ? ACCEPT : REJECT);
+                    //answers.add(isOk ? ACCEPT : REJECT);
                     //Log.d("answer", isOk ? ACCEPT : REJECT);
                 }
             }
 
-            int goodCount = 0;
+            /*int goodCount = 0;
             for(int i = 0; i < correctAnswers.size();i++){
                 String ca = correctAnswers.get(i);
                 String a = answers.get(i);
@@ -110,7 +111,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
                 }
             }
 
-            Log.d("answer", "count: " + correctAnswers.size() + ", good: " + goodCount);
+            Log.d("answer", "count: " + correctAnswers.size() + ", good: " + goodCount);*/
 
             client.close();
         }

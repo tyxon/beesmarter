@@ -22,16 +22,14 @@ public class PasswordBehaviorChecker {
     }
 
     public boolean isOk(Pattern pattern){
-        Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'isPasswordMatch'");
+        //Log.d(PasswordBehaviorChecker.class.getName(), "Checking 'isPasswordMatch'");
         if(!isPasswordMatch(pattern)){
-            Log.d(PasswordBehaviorChecker.class.getName(), "False");
+            /*Log.d(PasswordBehaviorChecker.class.getName(), "False");
             Log.d(OverallTimeConstraint.class.getName(),"0");
             Log.d(KeyPressedConstraint.class.getName(),"0");
             Log.d(KeyReleasedConstraint.class.getName(),"0");
-            //Log.d(KeyPressPlaceConstraint.class.getName(),"0");
+            Log.d(KeyPressPlaceConstraint.class.getName(),"0");*/
             return false;
-        }else{
-            Log.d(PasswordBehaviorChecker.class.getName(), "True");
         }
 
         constraints  = new ArrayList<>();
@@ -39,6 +37,7 @@ public class PasswordBehaviorChecker {
         constraints.add(new KeyPressedConstraint(training, pattern));
         constraints.add(new KeyReleasedConstraint(training, pattern));
         //constraints.add(new KeyPressPlaceConstraint(training, pattern));
+        //constraints.add(new PatternSearchConstraint(training, pattern));
 
         double possibilities = 0;
         double sumWeights = 0;
@@ -48,8 +47,8 @@ public class PasswordBehaviorChecker {
             possibilities += possibility;
             double weight = constraint.getWeight();
             sumWeights += weight;
-            DecimalFormat newFormat = new DecimalFormat("#.##");
-            Log.d(constraint.getClass().getName(),newFormat.format(possibility) + " -> " + weight + " -> " + newFormat.format(possibilities / sumWeights));
+            //DecimalFormat newFormat = new DecimalFormat("#.##");
+            //Log.d(constraint.getClass().getName(),newFormat.format(possibility) + " -> " + weight + " -> " + newFormat.format(possibilities / sumWeights));
         }
 
         double result = possibilities / sumWeights;

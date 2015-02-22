@@ -19,7 +19,7 @@ public class OverallTimeConstraint extends BaseConstraint {
     public double getPossibility() {
         //threshold = getAvgKeyPressTime() * 2;
         setMinMaxOverallTime();
-        threshold = minFullTime / 4;
+        threshold = minFullTime / 3;
 
         Double patternFullTime = pattern.getFullTime().doubleValue();
         if (patternFullTime >= minFullTime && patternFullTime <= maxFullTime) {
