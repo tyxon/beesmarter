@@ -37,6 +37,7 @@ public class PasswordBehaviorChecker {
         constraints.add(new OverallTimeConstraint(training, pattern));
         constraints.add(new KeyPressedConstraint(training, pattern));
         constraints.add(new KeyReleasedConstraint(training, pattern));
+        constraints.add(new KeyPressPlaceConstraint(training, pattern));
 
         double possibilities = 0;
         double sumWeights = 0;
