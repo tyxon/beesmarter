@@ -1,6 +1,8 @@
 package hu.r00ts.beesmarter.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,8 +32,18 @@ public class CheckPasswordActivity extends Activity {
 
         @Override
         public void onClick(View arg0) {
-            Intent intent = new Intent(CheckPasswordActivity.this, ManualTestActivity.class);
-            startActivity(intent);
+            if(SetPasswordActivity.training != null && SetPasswordActivity.training.Patterns.size() > 0){
+                checkPasswordButton.setText(String.valueOf(SetPasswordActivity.training.Patterns.size()));
+            }else{
+                new AlertDialog.Builder(CheckPasswordActivity.this).setTitle("Alert").setMessage("No patterns set.").setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                CheckPasswordActivity.this.finish();
+                            }
+                        }).show();
+            }
+
         }
 
     };

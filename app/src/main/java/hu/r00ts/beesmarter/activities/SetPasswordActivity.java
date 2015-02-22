@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,27 +33,38 @@ public class SetPasswordActivity extends Activity {
     public EditText password;
     public EditText passwordCheck;
     public Button setPasswordButton;
+    public Button endPatternButton;
+    public TextView timer;
     public LinearLayout keyboardLayout;
     public List<KeyButton> buttons;
 
     public Pattern pattern;
-    public Training training;
+    public static Training training;
 
     long startTime;
-    boolean isStarted = false;
-    String currentPassword = null;
+    boolean isStarted;
+    String currentPassword;
+
+    boolean isStartedCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password);
 
+        isStarted = false;
+        isStartedCounter = false;
+        currentPassword = null;
+
         password = (EditText) findViewById(R.id.password);
         passwordCheck = (EditText) findViewById(R.id.passwordCheck);
         setPasswordButton = (Button) findViewById(R.id.setPasswordButton);
+        endPatternButton = (Button) findViewById(R.id.endPatternButton);
         keyboardLayout = (LinearLayout) findViewById(R.id.keyboardLayout);
+        timer = (TextView) findViewById(R.id.timer);
 
         setPasswordButton.setOnClickListener(setPasswordButtonOnClickListener);
+        endPatternButton.setOnClickListener(endPatternButtonOnClickListener);
 
         //add keyboard buttons
         List<List<Integer>> keyRows = new ArrayList<>();
@@ -135,6 +148,26 @@ public class SetPasswordActivity extends Activity {
         training = new Training();
     }
 
+    void startCounter(){
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Time").setMessage("Time is up.").setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
+                SetPasswordActivity.this.finish();
+            }
+
+        }.start();
+    }
+
     OnClickListener setPasswordButtonOnClickListener = new OnClickListener(){
 
         @Override
@@ -145,8 +178,11 @@ public class SetPasswordActivity extends Activity {
             }
             isStarted = false;
 
+            String p = password.getText().toString();
             if(currentPassword == null){
-                currentPassword = password.getText().toString();
+                if(!p.isEmpty()){
+                    currentPassword = p;
+                }
             }else{
                 if(!currentPassword.equals(password.getText().toString())){
                     new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Wrong password. Try again.").setPositiveButton("Ok",
@@ -159,12 +195,37 @@ public class SetPasswordActivity extends Activity {
                 }
             }
 
-            createNewPattern();
+            if(p.isEmpty()){
+                new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Empty password. Try again.").setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
+            } else{
+                createNewPattern();
+            }
+
             password.setText("");
             passwordCheck.setText("");
         }
 
     };
+
+
+    OnClickListener endPatternButtonOnClickListener = new OnClickListener(){
+
+        @Override
+        public void onClick(View arg0) {
+            endPattern();
+        }
+
+    };
+
+    void endPattern(){
+
+        finish();
+    }
 
     OnTouchListener keyButtonOnClickListener;
 
@@ -178,26 +239,33 @@ public class SetPasswordActivity extends Activity {
                     if(!isStarted && Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         isStarted = true;
                         createNewPattern();
+                        Log.d("STATE", "started");
+                    }else if(pattern != null){
+                        Key key = new Key();
+                        pattern.Keys.add(key);
+                        KeyState keyStateDown = new KeyState();
+
+                        keyStateDown.Code = keyButton.getVisibleKeyCodeText();
+                        keyStateDown.X = (int) (event.getX() / keyButton.getWidth() * 100);
+                        keyStateDown.Y = (int) (event.getY() / keyButton.getHeight() * 100);
+                        keyStateDown.Time = getCurrentTime();
+
+                        Log.d("KEY", keyStateDown.toDebugString("DOWN"));
+
+                        key.KeyDown = keyStateDown;
                     }
-
-                    Key key = new Key();
-                    pattern.Keys.add(key);
-                    KeyState keyStateDown = new KeyState();
-
-                    keyStateDown.Code = keyButton.getVisibleKeyCodeText();
-                    keyStateDown.X = (int)(event.getX() / keyButton.getWidth() * 100);
-                    keyStateDown.Y = (int)(event.getY() / keyButton.getHeight() * 100);
-                    keyStateDown.Time = getCurrentTime();
-
-                    Log.d("KEY", keyStateDown.toDebugString("DOWN"));
-
-                    key.KeyDown = keyStateDown;
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if(!isStartedCounter && keyButton.getKeyCode() != Keyboard.KEYCODE_DONE){
+                        isStartedCounter = true;
+                        startCounter();
+                    }
                     Key key = null;
-                    for(Key k : pattern.Keys){
-                        if(k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())){
-                            key = k;
+                    if(pattern != null) {
+                        for (Key k : pattern.Keys) {
+                            if (k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())) {
+                                key = k;
+                            }
                         }
                     }
                     if(key != null){
@@ -236,9 +304,12 @@ public class SetPasswordActivity extends Activity {
                             }
                             isStarted = false;
 
+                            String p = password.getText().toString();
                             if(currentPassword == null){
-                                currentPassword = password.getText().toString();
-                            }else{
+                                if(!p.isEmpty()){
+                                    currentPassword = p;
+                                }
+                            } else{
                                 if(!currentPassword.equals(password.getText().toString())){
                                     new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Wrong password. Try again.").setPositiveButton("Ok",
                                             new DialogInterface.OnClickListener() {
@@ -249,12 +320,21 @@ public class SetPasswordActivity extends Activity {
                                     pattern = null;
                                 }
                             }
+                            if(p.isEmpty()){
+                                new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Empty password. Try again.").setPositiveButton("Ok",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        }).show();
+                            }else{
+                                createNewPattern();
+                            }
 
-                            createNewPattern();
                             password.setText("");
                             break;
                         case Keyboard.KEYCODE_SHIFT:
-                            KeyButton.setIsShiftPressed(!keyButton.getIsShiftPressed());
+                            KeyButton.setIsShiftPressed(!KeyButton.getIsShiftPressed());
                             setShiftTexts();
                             break;
                         default:
@@ -292,6 +372,7 @@ public class SetPasswordActivity extends Activity {
         startTime = System.currentTimeMillis();
 
         if(pattern != null && pattern.Keys.size() > 0){
+            Log.d("STATE", "end");
             training.Patterns.add(pattern);
             setPasswordButton.setText(String.valueOf(training.Patterns.size()));
         }
