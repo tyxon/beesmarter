@@ -48,11 +48,9 @@ public class CheckPasswordActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_password);
+        setContentView(R.layout.activity_check_password);
 
         isStarted = false;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_password);
 
         password = (EditText) findViewById(R.id.checkPassword);
         checkPasswordButton = (Button) findViewById(R.id.checkPasswordButton);
@@ -138,6 +136,8 @@ public class CheckPasswordActivity extends Activity {
                 button.setOnTouchListener(keyButtonOnClickListener);
             }
         }
+
+        pattern = new Pattern();
     }
 
     View.OnClickListener checkPasswordButtonOnClickListener = new View.OnClickListener(){
@@ -208,8 +208,9 @@ public class CheckPasswordActivity extends Activity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if(!isStarted && Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         isStarted = true;
-                        createNewPattern();
-                    }else if(pattern != null){
+                    }
+
+                    if(pattern.Keys.size() != 0 || Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         Key key = new Key();
                         pattern.Keys.add(key);
                         KeyState keyStateDown = new KeyState();
@@ -226,11 +227,9 @@ public class CheckPasswordActivity extends Activity {
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     Key key = null;
-                    if(pattern != null) {
-                        for (Key k : pattern.Keys) {
-                            if (k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())) {
-                                key = k;
-                            }
+                    for (Key k : pattern.Keys) {
+                        if (k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())) {
+                            key = k;
                         }
                     }
                     if(key != null){

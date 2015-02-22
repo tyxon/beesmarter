@@ -147,6 +147,7 @@ public class SetPasswordActivity extends Activity {
         }
 
         training = new Training();
+        pattern = new Pattern();
     }
 
     void startCounter(){
@@ -193,7 +194,7 @@ public class SetPasswordActivity extends Activity {
                                     dialog.cancel();
                                 }
                             }).show();
-                    pattern = null;
+                    createNewPattern(false);
                 }
             }
 
@@ -205,7 +206,7 @@ public class SetPasswordActivity extends Activity {
                             }
                         }).show();
             } else{
-                createNewPattern();
+                createNewPattern(true);
             }
 
             password.setText("");
@@ -225,10 +226,16 @@ public class SetPasswordActivity extends Activity {
     };
 
     void endPattern(){
+        finish();
+    }
+
+    @Override
+    protected void onDestroy(){
         if(cdt != null){
             cdt.cancel();
         }
-        finish();
+
+        super.onDestroy();
     }
 
     OnTouchListener keyButtonOnClickListener;
@@ -242,10 +249,9 @@ public class SetPasswordActivity extends Activity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if(!isStarted && Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         isStarted = true;
-                        createNewPattern();
                     }
 
-                    if(pattern != null){
+                    if(pattern.Keys.size() != 0 || Keyboard.KEYCODE_DONE != keyButton.getKeyCode()){
                         Key key = new Key();
                         pattern.Keys.add(key);
                         KeyState keyStateDown = new KeyState();
@@ -266,11 +272,9 @@ public class SetPasswordActivity extends Activity {
                         startCounter();
                     }
                     Key key = null;
-                    if(pattern != null) {
-                        for (Key k : pattern.Keys) {
-                            if (k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())) {
-                                key = k;
-                            }
+                    for (Key k : pattern.Keys) {
+                        if (k.KeyDown.Code.equals(keyButton.getVisibleKeyCodeText())) {
+                            key = k;
                         }
                     }
                     if(key != null){
@@ -322,7 +326,7 @@ public class SetPasswordActivity extends Activity {
                                                     dialog.cancel();
                                                 }
                                             }).show();
-                                    pattern = null;
+                                    createNewPattern(false);
                                 }
                             }
                             if(p.isEmpty()){
@@ -333,7 +337,7 @@ public class SetPasswordActivity extends Activity {
                                             }
                                         }).show();
                             }else{
-                                createNewPattern();
+                                createNewPattern(true);
                             }
 
                             password.setText("");
@@ -373,10 +377,10 @@ public class SetPasswordActivity extends Activity {
         return System.currentTimeMillis() - startTime;
     }
 
-    public void createNewPattern(){
+    public void createNewPattern(boolean isAdd){
         startTime = System.currentTimeMillis();
 
-        if(pattern != null && pattern.Keys.size() > 0){
+        if(isAdd && pattern.Keys.size() > 0){
             training.Patterns.add(pattern);
         }
 
