@@ -160,9 +160,9 @@ public class SetPasswordActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                SetPasswordActivity.this.endPattern();
                             }
                         }).show();
-                SetPasswordActivity.this.finish();
             }
 
         }.start();
@@ -184,7 +184,7 @@ public class SetPasswordActivity extends Activity {
                     currentPassword = p;
                 }
             }else{
-                if(!currentPassword.equals(password.getText().toString())){
+                if(!currentPassword.equals(password.getText().toString()) && !p.isEmpty()){
                     new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Wrong password. Try again.").setPositiveButton("Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -223,7 +223,6 @@ public class SetPasswordActivity extends Activity {
     };
 
     void endPattern(){
-
         finish();
     }
 
@@ -310,7 +309,7 @@ public class SetPasswordActivity extends Activity {
                                     currentPassword = p;
                                 }
                             } else{
-                                if(!currentPassword.equals(password.getText().toString())){
+                                if(!currentPassword.equals(password.getText().toString()) && !p.isEmpty()){
                                     new AlertDialog.Builder(SetPasswordActivity.this).setTitle("Alert").setMessage("Wrong password. Try again.").setPositiveButton("Ok",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
