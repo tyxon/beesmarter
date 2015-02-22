@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 
         // set dropdownlist data
         String[] items = new String[]{"TEST1", "TEST2", "TEST3", "TEST4"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         testCaseList.setAdapter(adapter);
 
         serverAddress.setText(defaultIP);
