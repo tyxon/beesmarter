@@ -28,6 +28,7 @@ public class PasswordBehaviorChecker {
             Log.d(OverallTimeConstraint.class.getName(),"0");
             Log.d(KeyPressedConstraint.class.getName(),"0");
             Log.d(KeyReleasedConstraint.class.getName(),"0");
+            //Log.d(KeyPressPlaceConstraint.class.getName(),"0");
             return false;
         }else{
             Log.d(PasswordBehaviorChecker.class.getName(), "True");
@@ -37,7 +38,7 @@ public class PasswordBehaviorChecker {
         constraints.add(new OverallTimeConstraint(training, pattern));
         constraints.add(new KeyPressedConstraint(training, pattern));
         constraints.add(new KeyReleasedConstraint(training, pattern));
-        constraints.add(new KeyPressPlaceConstraint(training, pattern));
+        //constraints.add(new KeyPressPlaceConstraint(training, pattern));
 
         double possibilities = 0;
         double sumWeights = 0;

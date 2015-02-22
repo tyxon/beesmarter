@@ -1,9 +1,5 @@
 package hu.r00ts.beesmarter.businesslogic.biometric;
 
-
-import android.inputmethodservice.Keyboard;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
