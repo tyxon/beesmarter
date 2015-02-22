@@ -39,6 +39,10 @@ public class HandTest {
             return 0;
         }
 
+        if (rightHandKeys.size() <= (minPasswordLength / 2) || leftHandKeys.size() <= (minPasswordLength / 2)) {
+            return 0;
+        }
+
         Double rightHandTime = 0d;
         for (Key key : rightHandKeys) {
             rightHandTime += key.getKeyPressTime();

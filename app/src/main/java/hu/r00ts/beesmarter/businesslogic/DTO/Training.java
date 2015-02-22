@@ -50,14 +50,21 @@ public class Training {
 
     public HashMap<String, Double> getAvarageKeypresses() {
         HashMap<String, Double> avarageKeypresses = new HashMap<String, Double>();
+        Integer divider = 1;
         for (Pattern pattern : Patterns) {
             for (Key key : pattern.Keys) {
-                avarageKeypresses.put(key.KeyDown.Code, avarageKeypresses.get(key.KeyDown.Code) + key.getKeyPressTime().doubleValue());
+                if (key.KeyDown.Code.length() == 1) {
+                    if (avarageKeypresses.get(key.KeyDown.Code) == null) {
+                        avarageKeypresses.put(key.KeyDown.Code, 0d);
+                    }
+                    avarageKeypresses.put(key.KeyDown.Code, avarageKeypresses.get(key.KeyDown.Code) + key.getKeyPressTime().doubleValue());
+                    divider++;
+                }
             }
         }
 
         for (String key : avarageKeypresses.keySet()) {
-            avarageKeypresses.put(key, avarageKeypresses.get(key) / Patterns.size());
+            avarageKeypresses.put(key, avarageKeypresses.get(key) / divider);
         }
 
         return avarageKeypresses;
