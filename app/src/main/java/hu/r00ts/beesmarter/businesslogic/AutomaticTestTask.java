@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hu.r00ts.beesmarter.businesslogic.DTO.Pattern;
 import hu.r00ts.beesmarter.businesslogic.DTO.Training;
 import hu.r00ts.beesmarter.communication.Client;
@@ -25,7 +28,7 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
     private Client client;
     private String answer;
     private String clientId;
-    private String goodbyText = "GOODBYE - CORRECTANSWERS=[";
+    private List<String> answers = new ArrayList<>();
 
     private boolean isSuccessfullyConnected = false;
 
@@ -69,24 +72,39 @@ public class AutomaticTestTask extends AsyncTask<Void, Void, Void> {
             //tests
             boolean isTestData = true;
             client.sendMessage(REQUEST_TEST);
+            List<String> correctAnswers = new ArrayList<>();
             while (isTestData) {
                 answer = client.receiveMessage();
                 Log.d("answer", answer != null ? answer : "answer is null");
 
                 if (answer != null && answer.contains("GOODBYE")) {
                     isTestData = false;
+                    answer = answer.substring(26, answer.length() - 2);
+                    for(String a : answer.split(" ")){
+                        correctAnswers.add(a);
+                    }
                 } else {
                     Pattern testPattern = XmlParser.parsePattern(answer);
                     boolean isOk = passwordBehaviorChecker.isOk(testPattern);
                     client.sendMessage(isOk ? ACCEPT : REJECT);
-                    goodbyText += (isOk ? ACCEPT : REJECT) + " ";
+                    answers.add(isOk ? ACCEPT : REJECT);
                     Log.d("answer", isOk ? ACCEPT : REJECT);
                     Log.d("tyxon", isOk ? ACCEPT : REJECT);
                 }
             }
 
-            Log.d("answer", goodbyText + "]");
-            Log.d("answer", answer.equals(goodbyText)? "GOOD" : "BAD");
+            int goodCount = 0;
+            for(int i = 0; i < correctAnswers.size();i++){
+                String ca = correctAnswers.get(i);
+                if(answers.get(i).equals(ca) ){
+                    goodCount++;
+                }else{
+                    Log.d("answer", "bad nr: " + (i+1));
+                    Log.d("answer", "correct answer: " + ca);
+                }
+            }
+
+            Log.d("answer", "count: " + correctAnswers.size() + ", good: " + goodCount);
 
             client.close();
         }
